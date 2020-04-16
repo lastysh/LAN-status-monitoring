@@ -10,23 +10,25 @@ import shutil
 
 
 PRIVATE_DIR = "../../private_files/"
+FILENAME = "LAN_ip_list.cfg"
+URL = "http://192.168.1.1/ER3260_ipmac.cfg"
 
 
 cfg = configparser.ConfigParser()
 cfg.read(PRIVATE_DIR+"users_config"+os.sep+"users.ini")
 USERNAME=cfg.get("USERS", "user1").encode()
 PASSWORD=cfg.get("PASSWORDS", "password1").encode()
+
 encoded = base64.b64encode(USERNAME+":".encode()+PASSWORD)
-
-get_url = "http://192.168.1.1/ER3260_ipmac.cfg"
 headers = {"Authorization": b"Basic " + encoded}
-query_res = requests.get(get_url, headers=headers)
-filename = PRIVATE_DIR + "ip_list_file" + os.sep + os.path.split(query_res.url)[-1]
-filename_split = os.path.splitext(filename)
-old_filename = filename_split[0]+"_old"+filename_split[1]
 
-if os.path.exists(filename):
-	shutil.move(filename, old_filename)
+query_res = requests.get(URL, headers=headers)
+filepath = PRIVATE_DIR + "ip_list_file" + os.sep + FILENAME
+filepath_split = os.path.splitext(filepath)
+old_filepath = filepath_split[0]+"_old"+filepath_split[1]
 
-with open(filename, "wb") as f:
+if os.path.exists(filepath):
+	shutil.move(filepath, old_filepath)
+
+with open(filepath, "wb") as f:
 	f.write(query_res.content)
