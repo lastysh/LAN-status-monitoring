@@ -9,7 +9,7 @@ import requests
 import shutil
 
 
-PRIVATE_DIR = "../../private_files/"
+PRIVATE_DIR = "../../private_files/ip_list_file"
 FILENAME = "LAN_ip_list.cfg"
 URL = "http://192.168.1.1/ER3260_ipmac.cfg"
 
@@ -23,7 +23,7 @@ encoded = base64.b64encode(USERNAME+":".encode()+PASSWORD)
 headers = {"Authorization": b"Basic " + encoded}
 
 query_res = requests.get(URL, headers=headers)
-filepath = PRIVATE_DIR + "ip_list_file" + os.sep + FILENAME
+filepath = PRIVATE_DIR + os.sep + FILENAME
 filepath_split = os.path.splitext(filepath)
 old_filepath = filepath_split[0]+"_old"+filepath_split[1]
 
