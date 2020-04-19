@@ -62,6 +62,8 @@ pool = mulPool(50) # 设定进程数
 pool.map(get_result, ip_msg_list)
 pool.close()
 pool.join()
-print(ip_status_dict)
-# ip_tuple = sorted(ip_status_dict.items(), key=lambda ip: ip[0])
+
+ip_tuple = sorted(ip_status_dict.items(), key=lambda ip: int(ip[0].split(".")[-1]))
+print(ip_tuple)
+
 
