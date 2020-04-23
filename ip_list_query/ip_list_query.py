@@ -9,13 +9,13 @@ import requests
 import shutil
 
 
-PRIVATE_DIR = "../../private_files/ip_list_file"
+PRIVATE_DIR = "../../private_files"
 FILENAME = "LAN_ip_list.cfg"
 URL = "http://192.168.1.1/ER3260_ipmac.cfg"
 
 
 cfg = configparser.ConfigParser()
-cfg.read(PRIVATE_DIR+"users_config"+os.sep+"users.ini")
+cfg.read(PRIVATE_DIR+os.sep+"users_config"+os.sep+"users.ini")
 USERNAME=cfg.get("USERS", "user1").encode()
 PASSWORD=cfg.get("PASSWORDS", "password1").encode()
 

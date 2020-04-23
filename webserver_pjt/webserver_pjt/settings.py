@@ -14,12 +14,12 @@ import os
 import configparser
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-PRIVATE_DIR = "../../private_files/ip_list_file"
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+PRIVATE_DIR = "../../private_files"
 cfg = configparser.ConfigParser()
-cfg.read(PRIVATE_DIR+"users_config"+os.sep+"users.ini")
-dbuser=cfg.get("DBACCOUNT", "user").encode()
-dbpasswd=cfg.get("DBACCOUNT", "password").encode()
+cfg.read(os.path.join(PRIVATE_DIR,"users_config","users.ini"))
+dbuser=cfg.get("DBACCOUNT", "user")
+dbpasswd=cfg.get("DBACCOUNT", "password")
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
