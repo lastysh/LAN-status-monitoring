@@ -39,4 +39,38 @@ body {
 .hu {
     float: left;
     list-style-type: none;
+    background: #33cc00;
+    border-radius: 10px;
+}
+.hu a{
+    color: #fff;
+    font-weight: bold;
+}
+.hu a:hover{
+    color: #f60;
+    text-decoration:none;
+}
+.hu a span p{
+    width: 120px;
+    text-align: center;
+}
+.out_ring {
+    display: block;
+    width: 16px;
+    height: 16px;
+    margin: 3px;
+    border-radius: 8px;
+    background-color: #696969;
+    float: left;
+}
+.spsty {
+    display: block;
+    width: 12px;
+    height: 12px;
+    margin: 2px;
+    border-radius: 6px;
+    background-color: rgba(128,128,128,0.8);
+}
+.p_name{
+    text-align: center;
 }
