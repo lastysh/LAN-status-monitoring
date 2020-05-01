@@ -70,19 +70,19 @@ def get_result(ip_msg):
 		ip_status_dict[ip] = msg_tup + (status,)
 
 
-def write_to_db(conn, isd):
+def write_to_db(conn, isl):
 	cur = conn.cursor()
 	cur.execute("select * from ns_test_ips")
 	if cur.fetchall():
 		cur.execute("truncate ns_test_ips")
 		cur.close()
-	for item in isd.items():
+	for item in isl:
 		cur = conn.cursor()
 		if item[0] == InterAddr:
 			sql = "insert into ns_test_ips values(NULL, '%s', '%s', '%s', '%s', '%s')" % (item[0], item[1][0], item[1][1], item[1][2], FIDelayV)
 		else:
 			sql = "insert into ns_test_ips values(NULL, '%s', '%s', '%s', '%s', NULL)" % (item[0], item[1][0], item[1][1], item[1][2])
-		print(sql)
+		sql = "insert into ns_test_ips values(NULL, '%s', '%s', '%s', '%s', '')" % (item[0], item[1][0], item[1][1], item[1][2])
 		cur.execute(sql)
 		cur.close()
 	conn.commit()
@@ -95,6 +95,8 @@ if __name__ == '__main__':
 	pool.close()
 	pool.join()
 
-	# ip_tuple = sorted(ip_status_dict.items(), key=lambda ip: int(ip[0].split(".")[-1]))
+	InterInfo = (InterAddr, (ip_status_dict.pop(InterAddr)))
+	ip_status_list = sorted(ip_status_dict.items(), key=lambda ip: int(ip[0].split(".")[-1]))
+	ip_status_list.insert(0, InterInfo)
 	conn = MySQLdb.connect(host="localhost", user="root", passwd="linux20001", db="ip_test")
-	write_to_db(conn, ip_status_dict)
+	write_to_db(conn, ip_status_list)
