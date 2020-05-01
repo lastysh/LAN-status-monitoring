@@ -5,27 +5,29 @@
     <div class="container" style="width: 90%">
     	<ul>
             {% for ip in ip_list %}
-                <li class="hu" style="width: 150px; margin: 10px;">
+                {% if ip.status != '0' %}
+                <li class="hu" style="width: 150px;margin: 10px;background: #33cc00;">
                     <a rel="" class="" href="" target="_blank" title="{{ ip.mac }}">
-                        {% if ip != 0%}
-                            <span class="out_ring">
-                                <span class="spsty" name="{{ ip.status }}"></span>
-                            </span>
-                        {% else %}
-                            <span class="out_ring">
-                                <span class="spsty" name="{{ ip.status }}"></span>
-                            </span>
-                        {% endif %}
-                        <span>
-                            <p>{{ ip.ip }}</p>
+                        <span class="out_ring">
+                            <span class="spsty" name="{{ ip.status }}"></span>
                         </span>
-                        <div>
-                            <p class="p_name">
-                                <a>{{ ip.name}}</a>
-                            </p>
+                        <span><p>{{ ip.ip }}</p></span>
+                        <div><p class="p_name"><a>{{ ip.name}}</a></p>
                         </div>
                     </a>
                 </li>
+                {% else %}
+                <li class="hu" style="width: 150px;margin: 10px;background: #2F4F4F;">
+                    <a rel="" class="" href="" target="_blank" title="{{ ip.mac }}">
+                        <span class="out_ring">
+                            <span class="spsty" name="{{ ip.status }}"></span>
+                        </span>
+                        <span><p>{{ ip.ip }}</p></span>
+                        <div><p class="p_name"><a>{{ ip.name}}</a></p>
+                        </div>
+                    </a>
+                </li>
+                {% endif %}
             {% endfor %}
     	</ul>
     </div>
