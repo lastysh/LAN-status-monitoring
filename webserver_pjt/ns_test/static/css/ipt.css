@@ -1,55 +1,32 @@
 body {
     background-color: #eee;
 }
-.navbar-brand {
-    background-color: #f60;
+.navbar-default .navbar-brand {
+    color: #5e5e5e;
+    background-color: rgba(255, 102, 0, 0.80);
 }
-.navbar-brand:hover { 
-    font-size: 150%;
-    text-decoration: underline;
+.navbar-default .navbar-brand:focus {
+    color: #5e5e5e;
+    background-color: rgba(255, 102, 0, 0.80);
 }
-.form-login {
-    max-width: 330px;
-    padding: 15px;
-    margin: 0 auto;
-}
-.form-login .form-control {
-    position: relative;
-    height: auto;
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
-    padding: 10px;
-    font-size: 16px;
-}
-
-.form-login .form-control:focus {
-    z-index: 2;
-}
-.form-login input[type="text"] {
-    margin-bottom: -1px;
-    border-bottom-right-radius: 0;
-    border-bottom-left-raidus: 0;
-}
-.form-login input[type="password"] {
-    margin-bottom: 10px;
-    border-top-left-radius: 0;
-    border-top-right-radius: 0;
+.navbar-default .navbar-brand:hover {
+    color: rgba(255, 255, 255, 0.66);
+    background-color: #5e5e5e;
 }
 .hu {
     float: left;
     list-style-type: none;
     border-radius: 10px;
 }
-.hu a{
+.hu a {
     color: #fff;
     font-weight: bold;
 }
-.hu a:hover{
+.hu a:hover {
     color: #f60;
     text-decoration:none;
 }
-.hu a span p{
+.hu a span p {
     width: 120px;
     text-align: center;
 }
@@ -70,6 +47,9 @@ body {
     border-radius: 6px;
     background-color: rgba(176,196,222,0.8);
 }
-.p_name{
+.p_name {
     text-align: center;
+}
+.p_name:hover {
+    cursor: pointer;
 }
