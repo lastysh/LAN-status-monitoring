@@ -7,7 +7,7 @@ class Ips(models.Model):
         ('0', '宕机'),
         ('1', '正常'),
         ('2','高延迟'),
-        ('3','不可达'),
+        ('3','不稳定'),
     )
 
     ip = models.CharField(verbose_name='IP地址', max_length=128, unique=True, editable=False)
