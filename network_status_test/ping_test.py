@@ -59,7 +59,7 @@ def get_result(ip_msg):
 		elif len(unreachable) > 0:
 			status = 3  # Ping unstable
 			ip_status_dict[ip] = msg_tup + (status,)
-		elif int(average[0])>200 or len(overtime)>0:
+		elif int(average[0])>100 or len(overtime)>0:
 			status = 2
 			ip_status_dict[ip] = msg_tup + (status,)
 		else:
