@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% block title %}主页{% endblock %}
 {% block content %}
-    <a>外网延迟： {{ baidu.comment }}</a>
+    <a title="{{ baidu.ip }}" href="https://www.baidu.com">外网延迟： {{ baidu.comment }}</a>
     <div class="container" style="width: 90%">
     	<ul>
             {% for ip in ip_list %}

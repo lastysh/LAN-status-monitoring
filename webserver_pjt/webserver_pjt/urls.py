@@ -20,5 +20,6 @@ from ns_test.views import *
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    url('', test_index),
+    url('^$', test_index),
+    url('index/', index)
 ]
