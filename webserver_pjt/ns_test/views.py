@@ -14,3 +14,10 @@ def test_index(request):
 
 def index(request):
 	return HttpResponseRedirect('/')
+
+def login(request):
+	return HttpResponse("<b>功能正在开发中，敬请期待</b>")
+
+
+def register(request):
+	return HttpResponse("<b>功能正在开发中，敬请期待</b>")
