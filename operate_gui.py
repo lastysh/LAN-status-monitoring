@@ -15,7 +15,7 @@ MGR_PATH = os.path.join(MGR_DIR, MGR_FILE)
 
 root = tkinter.Tk()
 setWidth, setHeight = root.maxsize()
-root.geometry('320x210+%d+%d' % ((setWidth-320)/2, (setHeight)/2-210))
+root.geometry('320x230+%d+%d' % ((setWidth-320)/2, (setHeight)/2-230))
 root.title('运行助手')
 root.resizable(width=False, height=False)
 
@@ -46,6 +46,7 @@ def test_bbtn():
 	else:
 		button_index.config(state=tkinter.DISABLED)
 		button_admin.config(state=tkinter.DISABLED)
+	root.update()
 
 
 def change_text():
@@ -53,19 +54,27 @@ def change_text():
 		run_mgrshell('python manage.py runserver')
 		bvar1.set("停止")
 		button1['background'] = "#32A084"
-		messagebox.showinfo(title='提示信息', message='开始运行')
+		# messagebox.showinfo(title='提示信息', message='开始运行')
+		bottom_show['text'] = "开始运行"
 		test_bbtn()
+		time.sleep(0.5)
+		bottom_show['text'] = "服务已启动"
 	else:
 		if askyesno('操作提示', '是否停止服务？', default='no'):
 			search_res = find_thread()
 			if search_res:
 				kill_task(search_res)
 				bvar1.set("运行")
+				bottom_show['text'] = "停止服务"
 				test_bbtn()
 				button1['background'] = "#EBEDEF"
+				time.sleep(0.5)
+				bottom_show['text'] = "就绪"
 			else:
+				bottom_show['text'] = "未就绪"
 				messagebox.showwarning(title='提示信息', message='服务进程不存在！')
 				bvar1.set("运行")
+				bottom_show['text'] = "就绪"
 				test_bbtn()
 				button1['background'] = "#EBEDEF"
 
@@ -115,14 +124,19 @@ button_index.grid(row=4,column=3,padx=10,ipadx=5,ipady=2)
 button_admin = Button(text='控制台',command=lambda:open_explo('127.0.0.1:8000/admin'))
 button_admin.grid(row=4,column=4,ipady=2)
 
+bottom_show = Label(foreground='blue',width=36,anchor='w')
+bottom_show.grid(row=5,column=0,columnspan=6,padx=15,ipadx=5,ipady=6,sticky='W')
+
 ifSetup = find_thread()
 test_bbtn()
 if ifSetup:
 	root.withdraw()
 	if messagebox.askyesno(title='提示信息', message='8000 端口已被占用，是否帮您停止对应服务？'):
 		kill_task(ifSetup)
+		bottom_show['text'] = "就绪"
 	else:
 		button1.config(state=tkinter.DISABLED)
+		bottom_show['text'] = "未就绪"
 	root.deiconify()
 
 
