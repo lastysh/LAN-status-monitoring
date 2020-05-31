@@ -4,7 +4,7 @@ import os
 import time
 import re
 import sys
-from tkinter import Label, Button, StringVar, messagebox, simpledialog
+from tkinter import Label, Button, StringVar
 from tkinter.messagebox import *
 
 
@@ -15,7 +15,7 @@ MGR_PATH = os.path.join(MGR_DIR, MGR_FILE)
 
 root = tkinter.Tk()
 setWidth, setHeight = root.maxsize()
-root.geometry('320x210+%d+%d' % ((setWidth-320)/2, (setHeight)/2-210))
+root.geometry('320x220+%d+%d' % ((setWidth-320)/2, (setHeight)/2-220))
 root.title('运行助手')
 root.resizable(width=False, height=False)
 
@@ -33,7 +33,7 @@ def kill_task(res:str):
 	try:
 		pid_value = re.findall(r'LISTENING\s+?(\d+)', res.decode())[0]
 	except:
-		messagebox.showwarning(title='提示信息', message='Error: 未知错误')
+		showwarning(title='提示信息', message='Error: 未知错误')
 		root.destroy()
 		sys.exit(0)
 	subprocess.Popen('taskkill /F /pid %s' % pid_value, shell=True, stdout=subprocess.PIPE)
@@ -46,6 +46,7 @@ def check_btn():
 	else:
 		button_index.config(state=tkinter.DISABLED)
 		button_admin.config(state=tkinter.DISABLED)
+	root.update()
 
 
 def change_text():
@@ -53,19 +54,27 @@ def change_text():
 		run_mgrshell('python manage.py runserver')
 		bvar1.set("停止")
 		button1['background'] = "#32A084"
-		messagebox.showinfo(title='提示信息', message='开始运行')
+		# showinfo(title='提示信息', message='开始运行')
+		bottom_message['text'] = "开始运行"
 		check_btn()
+		time.sleep(0.5)
+		bottom_message['text'] = "服务已启动"
 	else:
 		if askyesno('操作提示', '是否停止服务？', default='no'):
 			search_res = find_thread()
 			if search_res:
 				kill_task(search_res)
 				bvar1.set("运行")
+				bottom_message['text'] = "停止服务"
 				check_btn()
 				button1['background'] = "#EBEDEF"
+				time.sleep(0.5)
+				bottom_message['text'] = "就绪"
 			else:
-				messagebox.showwarning(title='提示信息', message='服务进程不存在！')
+				bottom_message['text'] = "未就绪"
+				showwarning(title='提示信息', message='服务进程不存在！')
 				bvar1.set("运行")
+				bottom_message['text'] = "就绪"
 				check_btn()
 				button1['background'] = "#EBEDEF"
 
@@ -115,14 +124,19 @@ button_index.grid(row=4,column=3,padx=10,ipadx=5,ipady=2)
 button_admin = Button(root, text='控制台',command=lambda:open_explo('127.0.0.1:8000/admin'))
 button_admin.grid(row=4,column=4,ipady=2)
 
+bottom_message = Label(foreground='blue',width=36,anchor='w',font=("Arial", 8))
+bottom_message.grid(row=5,column=0,columnspan=6,padx=15,ipadx=5,sticky='W')
+
 ifSetup = find_thread()
 check_btn()
 if ifSetup:
 	root.withdraw()
-	if messagebox.askyesno(title='提示信息', message='8000 端口已被占用，是否帮您停止对应服务？'):
+	if askyesno(title='提示信息', message='8000 端口已被占用，是否帮您停止对应服务？'):
 		kill_task(ifSetup)
+		bottom_message['text'] = "就绪"
 	else:
 		button1.config(state=tkinter.DISABLED)
+		bottom_message['text'] = "未就绪"
 	root.deiconify()
 
 
