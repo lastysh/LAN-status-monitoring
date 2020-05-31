@@ -39,7 +39,7 @@ def kill_task(res:str):
 	subprocess.Popen('taskkill /F /pid %s' % pid_value, shell=True, stdout=subprocess.PIPE)
 
 
-def test_bbtn():
+def check_btn():
 	if bvar1.get()=="停止":
 		button_index.config(state=tkinter.ACTIVE)
 		button_admin.config(state=tkinter.ACTIVE)
@@ -54,24 +54,24 @@ def change_text():
 		bvar1.set("停止")
 		button1['background'] = "#32A084"
 		messagebox.showinfo(title='提示信息', message='开始运行')
-		test_bbtn()
+		check_btn()
 	else:
 		if askyesno('操作提示', '是否停止服务？', default='no'):
 			search_res = find_thread()
 			if search_res:
 				kill_task(search_res)
 				bvar1.set("运行")
-				test_bbtn()
+				check_btn()
 				button1['background'] = "#EBEDEF"
 			else:
 				messagebox.showwarning(title='提示信息', message='服务进程不存在！')
 				bvar1.set("运行")
-				test_bbtn()
+				check_btn()
 				button1['background'] = "#EBEDEF"
 
 
 def run_mgrshell(run_tp):
-	mark = time.strftime("RA+%Y%m%d %H:%M:%S", time.localtime())
+	mark = time.strftime("RA+%Y%m%d %H:%M:%S", time.localtime()) # 用于进程名称的特征字符串，方便过滤
 	cmd = 'start run_assistant.bat "%s" %s' % (mark, run_tp)
 	_bat = subprocess.Popen(cmd, shell=True)
 	# button1.config(state=tkinter.DISABLED)
@@ -95,28 +95,28 @@ def run_mgrshell(run_tp):
 bvar1 = StringVar()
 bvar1.set('运行')
 
-label1 = Label(text='web服务',width=25,borderwidth=2,relief='groove',background='#f60',foreground='white')
-button1 = Button(textvariable=bvar1,background="#EBEDEF",command=change_text)
+label1 = Label(root, text='web服务',width=25,borderwidth=2,relief='groove',background='#f60',foreground='white')
+button1 = Button(root, textvariable=bvar1,background="#EBEDEF",command=change_text)
 label1.grid(row=0,column=0,columnspan=5,padx=15,pady=10,ipadx=5,ipady=6)
 button1.grid(row=0,column=5,padx=30,pady=10,ipadx=5,ipady=2)
 
-label2 = Label(text='管理终端',width=25,borderwidth=2,relief='groove',background='#f60',foreground='white')
-button2 = Button(text='运行',background='#EBEDEF',command=lambda:run_mgrshell('python manage.py shell'))
+label2 = Label(root, text='管理终端',width=25,borderwidth=2,relief='groove',background='#f60',foreground='white')
+button2 = Button(root, text='运行',background='#EBEDEF',command=lambda:run_mgrshell('python manage.py shell'))
 label2.grid(row=1,column=0,columnspan=5,padx=15,pady=10,ipadx=5,ipady=6)
 button2.grid(row=1,column=5,padx=30,pady=10,ipadx=5,ipady=2)
 
-label3 = Label(text='数据库终端',width=25,borderwidth=2,relief='groove',background='#f60',foreground='white')
-button3 = Button(text='运行',background="#EBEDEF",command=lambda:run_mgrshell('python manage.py dbshell'))
+label3 = Label(root, text='数据库终端',width=25,borderwidth=2,relief='groove',background='#f60',foreground='white')
+button3 = Button(root, text='运行',background="#EBEDEF",command=lambda:run_mgrshell('python manage.py dbshell'))
 label3.grid(row=3,column=0,columnspan=5,padx=15,pady=10,ipadx=5,ipady=6)
 button3.grid(row=3,column=5,padx=30,pady=10,ipadx=5,ipady=2)
 
-button_index = Button(text='首页',command=lambda:open_explo('127.0.0.1:8000/index'))
+button_index = Button(root, text='首页',command=lambda:open_explo('127.0.0.1:8000/index'))
 button_index.grid(row=4,column=3,padx=10,ipadx=5,ipady=2)
-button_admin = Button(text='控制台',command=lambda:open_explo('127.0.0.1:8000/admin'))
+button_admin = Button(root, text='控制台',command=lambda:open_explo('127.0.0.1:8000/admin'))
 button_admin.grid(row=4,column=4,ipady=2)
 
 ifSetup = find_thread()
-test_bbtn()
+check_btn()
 if ifSetup:
 	root.withdraw()
 	if messagebox.askyesno(title='提示信息', message='8000 端口已被占用，是否帮您停止对应服务？'):
