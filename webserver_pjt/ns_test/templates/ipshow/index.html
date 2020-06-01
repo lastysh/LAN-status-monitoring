@@ -1,15 +1,16 @@
 {% extends 'base.html' %}
 {% block title %}主页{% endblock %}
 {% block content %}
-    <a title="{{ baidu.ip }}" href="https://www.baidu.com">外网延迟： {{ baidu.comment }}</a>
+    <span class="extranet"><a title="{{ baidu.ip }}" href="https://www.baidu.com">外网延迟： {{ baidu.comment }}</a></span>
+    <span id="update" onclick="update_status()"><button>更新状态</button></span>
     <div class="container" style="width: 90%">
     	<ul>
             {% for ip in ip_list %}
                 {% if ip.status != '0' %}
-                <li class="hu" style="width: 150px;margin: 10px;background: #33cc00;">
+                <li class="ip_container" style="width: 150px;margin: 10px;background: #33cc00;">
                     <a rel="" class="" href="" target="_blank" title="{{ ip.mac }}">
-                        <span class="out_ring">
-                            <span class="spsty" name="{{ ip.status }}"></span>
+                        <span class="outer_boundary">
+                            <span class="sp_style" name="{{ ip.status }}"></span>
                         </span>
                         <span><p>{{ ip.ip }}</p></span>
                         <div><p class="p_name"><a title="{{ ip.mac }}" onclick="startipt(this);">{{ ip.name}}</a></p>
@@ -17,10 +18,10 @@
                     </a>
                 </li>
                 {% else %}
-                <li class="hu" style="width: 150px;margin: 10px;background: #2F4F4F;">
+                <li class="ip_container" style="width: 150px;margin: 10px;background: #2F4F4F;">
                     <a rel="" class="" href="" target="_blank" title="{{ ip.mac }}">
-                        <span class="out_ring">
-                            <span class="spsty" name="{{ ip.status }}"></span>
+                        <span class="outer_boundary">
+                            <span class="sp_style" name="{{ ip.status }}"></span>
                         </span>
                         <span><p>{{ ip.ip }}</p></span>
                         <div><p class="p_name"><a title="{{ ip.mac }}" onclick="startipt(this);">{{ ip.name}}</a></p>
