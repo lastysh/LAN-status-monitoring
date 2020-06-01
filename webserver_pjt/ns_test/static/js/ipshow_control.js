@@ -1,5 +1,5 @@
 function swColor(){
-	var sps = document.getElementsByClassName("spsty");
+	var sps = document.getElementsByClassName("sp_style");
 	for(var i=0;i<sps.length;i++)
 	{	
 		if(sps[i].getAttribute("name") == "1"){
@@ -24,7 +24,7 @@ function swColor(){
 	setTimeout("rmStyle()", 1000);
 }
 function rmStyle(){
-	var sps = document.getElementsByClassName("spsty");
+	var sps = document.getElementsByClassName("sp_style");
 	for(var i=0;i<sps.length;i++)
 	{
 		if(sps[i].getAttribute("name") == "1"){
@@ -38,5 +38,11 @@ function begin(){
 begin();
 function startipt(obj){
 	alert("添加备注的功能正在开发中，敬请期待");
+}
+function update_status(){
+	alert("test update function ");
+	var _update = document.getElementById("update");
+	console.log(_update)
+	_update.innerHTML = "<img src='static/img/loading_1.gif' style='width:80px;height:60px;'></img>"
 }
 // swColor();
