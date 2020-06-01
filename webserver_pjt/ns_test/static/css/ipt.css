@@ -1,5 +1,5 @@
 body {
-    background-color: #eee;
+    background-color: rgb(107, 253, 188);
 }
 .navbar-default .navbar-brand {
     color: #5e5e5e;
@@ -13,24 +13,24 @@ body {
     color: rgba(255, 255, 255, 0.66);
     background-color: #5e5e5e;
 }
-.hu {
+.ip_container {
     float: left;
     list-style-type: none;
     border-radius: 10px;
 }
-.hu a {
+.ip_container a {
     color: #fff;
     font-weight: bold;
 }
-.hu a:hover {
+.ip_container a:hover {
     color: #f60;
     text-decoration:none;
 }
-.hu a span p {
+.ip_container a span p {
     width: 120px;
     text-align: center;
 }
-.out_ring {
+.outer_boundary {
     display: block;
     width: 16px;
     height: 16px;
@@ -39,7 +39,7 @@ body {
     background-color: #DCDCDC;
     float: left;
 }
-.spsty {
+.sp_style {
     display: block;
     width: 12px;
     height: 12px;
@@ -52,4 +52,26 @@ body {
 }
 .p_name:hover {
     cursor: pointer;
+}
+.extranet {
+    margin-left: 10px;
+}
+#update {
+    position: fixed;
+    display: block;
+    margin: 10px;
+    width: 80px;
+    height: 60px;
+    line-height: 60px;
+}
+#update button {
+    background: rgb(56, 82, 145, 0.5);
+    border-color: rgb(56, 82, 145, 0.5);
+    color: white;
+    font-size: 16px;
+    width: 80px;
+    height: 30px;
+    vertical-align: middle;
+    line-height: 28px;
+    border-radius: 8%;
 }
