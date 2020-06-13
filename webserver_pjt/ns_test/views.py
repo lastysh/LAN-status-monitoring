@@ -4,8 +4,9 @@ from ns_test import models
 # Create your views here.
 
 import sys
-sys.path.append(r"../..")
-# from network_status_test import *
+sys.path.append(r"../")
+from network_status_test import ping_test
+
 
 def test_index(request):
 	if request.method == 'GET':
@@ -26,4 +27,5 @@ def register(request):
 
 
 def update_state(request):
-	pass
+	ping_test.main()
+	return HttpResponse("更新成功！")

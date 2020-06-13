@@ -8,6 +8,10 @@ import MySQLdb
 from multiprocessing.dummy import Pool as mulPool
 
 
+import sys
+sys.path.append("../")
+from ip_list_query import ip_list_query
+
 IP_FILE_PATH = "../../private_files/ip_list_file/LAN_ip_list.cfg"
 InterAddr = "www.baidu.com"
 FirstTup = (InterAddr, ('NaN', 'Baidu'))
@@ -32,10 +36,6 @@ def ping_execute(ip):
 	res = subprocess.run('ping %s' % ip, shell=True, stdout=subprocess.PIPE)
 	info = res.stdout.decode('cp936')
 	return info
-
-
-ip_msg_list = file_parser()
-ip_status_dict = dict()
 
 
 def get_result(ip_msg):
@@ -87,7 +87,12 @@ def write_to_db(conn, isl):
 	conn.commit()
 	conn.close()
 
-if __name__ == '__main__':
+
+def main():
+	global ip_status_dict
+	ip_list_query.query_ip()
+	ip_msg_list = file_parser()
+	ip_status_dict = dict()
 	ip_msg_list.insert(0, FirstTup)
 	pool = mulPool(128) # 设定进程数
 	pool.map(get_result, ip_msg_list)
@@ -99,3 +104,7 @@ if __name__ == '__main__':
 	ip_status_list.insert(0, InterInfo)
 	conn = MySQLdb.connect(host='localhost', user='root', passwd='linux20001', db='ip_test')
 	write_to_db(conn, ip_status_list)
+
+
+if __name__ == '__main__':
+	main()

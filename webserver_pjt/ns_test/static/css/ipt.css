@@ -75,3 +75,6 @@ body {
     line-height: 28px;
     border-radius: 8%;
 }
+.set_comment:hover{
+    cursor: url(/static/img/pen.ico) 10 25, auto;
+}
