@@ -1,3 +1,7 @@
+function load(){
+	var _switch=setInterval("swColor()", 2000);
+}
+
 function swColor(){
 	var sps = document.getElementsByClassName("sp_style");
 	for(var i=0;i<sps.length;i++)
@@ -23,6 +27,7 @@ function swColor(){
 	}
 	setTimeout("rmStyle()", 1000);
 }
+
 function rmStyle(){
 	var sps = document.getElementsByClassName("sp_style");
 	for(var i=0;i<sps.length;i++)
@@ -32,13 +37,11 @@ function rmStyle(){
 		}
 	}
 }
-function begin(){
-	var _switch=setInterval("swColor()", 2000);
-}
-begin();
+
 function startipt(obj){
 	alert("添加备注的功能正在开发中，敬请期待");
 }
+
 function update_status(){
 	var _update = document.getElementById("update");
 	_update.innerHTML = "<img src='static/img/loading_1.gif' style='width:80px;height:60px;'></img>";
@@ -64,4 +67,3 @@ function update_status(){
 	xmlhttp.open("GET","/update_state",true);
 	xmlhttp.send();
 }
-// swColor();
