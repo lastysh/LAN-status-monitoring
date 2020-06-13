@@ -40,9 +40,28 @@ function startipt(obj){
 	alert("添加备注的功能正在开发中，敬请期待");
 }
 function update_status(){
-	alert("test update function ");
 	var _update = document.getElementById("update");
-	console.log(_update)
-	_update.innerHTML = "<img src='static/img/loading_1.gif' style='width:80px;height:60px;'></img>"
+	_update.innerHTML = "<img src='static/img/loading_1.gif' style='width:80px;height:60px;'></img>";
+	var xmlhttp;
+	if (window.XMLHttpRequest)
+	{// code for IE7+, Firefox, Chrome, Opera, Safari
+		xmlhttp=new XMLHttpRequest();
+	}
+	else
+	{// code for IE6, IE5
+		xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+	}
+	// _update.innerHTML = xmlhttp.responseText;
+	xmlhttp.onreadystatechange=function()
+	{
+		if (xmlhttp.readyState==4 && xmlhttp.status==200)
+		{
+			_update.innerHTML= '<p style="color:red;">' + xmlhttp.responseText + '</p>';
+			var update = "javascript:location.href='/'"
+    		setTimeout(update,1000);
+		}
+	}
+	xmlhttp.open("GET","/update_state",true);
+	xmlhttp.send();
 }
 // swColor();
