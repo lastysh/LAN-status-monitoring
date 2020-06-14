@@ -78,3 +78,13 @@ body {
 .set_comment:hover{
     cursor: url(/static/img/pen.ico) 10 25, auto;
 }
+.set_comment input{
+    border: 0;
+    border-style: solid;
+    border-bottom-width: 2px;
+    border-color: rgba(255, 255, 255, 0.5);
+    background: transparent;
+}
+.set_comment input:focus{
+    outline: 0;
+}
