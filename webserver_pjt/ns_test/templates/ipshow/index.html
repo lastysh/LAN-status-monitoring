@@ -8,7 +8,7 @@
             {% for ip in ip_list %}
                 {% if ip.status != '0' %}
                 <li class="ip_container" style="width: 150px;margin: 10px;background: #33cc00;">
-                    <a rel="" class="" href="" target="_blank" title="{{ ip.mac }}">
+                    <a rel="" class="" title="{{ ip.mac }}">
                         <span class="outer_boundary">
                             <span class="sp_style" name="{{ ip.status }}"></span>
                         </span>
@@ -19,7 +19,7 @@
                 </li>
                 {% else %}
                 <li class="ip_container" style="width: 150px;margin: 10px;background: #2F4F4F;">
-                    <a rel="" class="" href="" target="_blank" title="{{ ip.mac }}">
+                    <a rel="" class="" target="_blank" title="{{ ip.mac }}">
                         <span class="outer_boundary">
                             <span class="sp_style" name="{{ ip.status }}"></span>
                         </span>
