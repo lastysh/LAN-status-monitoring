@@ -39,7 +39,11 @@ function rmStyle(){
 }
 
 function startipt(obj){
-	alert("添加备注的功能正在开发中，敬请期待");
+	// console.log(obj);
+	alert("igie");
+	obj.removeAttribute("onclick")
+	obj.innerHTML = '<input type="text" maxlength="10" size="10"></input>';
+	// console.log(obj);
 }
 
 function update_status(){
