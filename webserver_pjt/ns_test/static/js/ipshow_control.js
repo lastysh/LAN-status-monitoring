@@ -7,13 +7,10 @@ function swColor(){
 	for(var i=0;i<sps.length;i++)
 	{	
 		if(sps[i].getAttribute("name") == "1"){
-			// sps[i].style.backgroundColor="#00FF00";
 			sps[i].style.backgroundColor="rgba(0,255,0,0.8)";
 		}else if(sps[i].getAttribute("name") == "0"){
-			// sps[i].style.backgroundColor="#FF0000";
 			sps[i].style.backgroundColor="rgba(255,0,0,0.8)";
 		}else if(sps[i].getAttribute("name") == "2"){
-			// sps[i].style.backgroundColor="#FF0000";
 			sps[i].style.backgroundColor="rgba(255,150,0,1)";
 		}else{
 			sps[i].style.setProperty('background-color','#DCDCDC');
@@ -38,15 +35,30 @@ function rmStyle(){
 	}
 }
 
-function startipt(obj){
-	// console.log(obj);
-	alert("igie");
-	obj.removeAttribute("onclick")
-	obj.innerHTML = '<input type="text" maxlength="10" size="10"></input>';
-	// console.log(obj);
+function addComment(obj){
+	obj.removeAttribute("onclick");
+	obj.innerHTML = '<input type="text" maxlength="10" size="10" style="color: black;font-weight: bold;height: 18px;" onblur="submitInput(this)" onKeypress="checkKey(event);">';
 }
 
-function update_status(){
+function checkKey(e){
+	if (e.keyCode == 13) {
+		$(e.target).blur();
+	}
+}
+
+function submitInput(obj){
+	var parent = obj.parentNode;
+	parent.setAttribute("onclick", "addComment(this);");
+	var comment = obj.value;
+	if (comment != ''){
+		console.log("success");
+		parent.innerHTML = comment;}
+	else{
+		console.log("ss");
+		parent.innerHTML = parent.name;}
+}
+
+function updateStatus(){
 	var _update = document.getElementById("update");
 	_update.innerHTML = "<img src='static/img/loading_1.gif' style='width:80px;height:60px;'></img>";
 	var xmlhttp;
