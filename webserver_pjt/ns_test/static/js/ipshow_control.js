@@ -37,7 +37,21 @@ function rmStyle(){
 
 function addComment(obj){
 	obj.removeAttribute("onclick");
-	obj.innerHTML = '<input type="text" maxlength="10" size="10" style="color: black;font-weight: bold;height: 18px;" onblur="submitInput(this)" onKeypress="checkKey(event);">';
+	obj.innerHTML = '<input type="text" class="af" maxlength="10" size="10" style="color: black;font-weight: bold;height: 18px;" onblur="submitInput(this)" onKeypress="checkKey(event);" ref="af">';
+	input_node = obj.getElementsByTagName('input')[0];
+	var vue=new Vue({
+		el: '.af',
+		created() {
+        	this.af()
+    	},
+		methods:{
+	        af: function() {
+	        	this.$nextTick(() => {
+	    			this.$refs.af.focus()
+	  			})
+	  		}
+		}
+	})
 }
 
 function checkKey(e){
@@ -51,10 +65,8 @@ function submitInput(obj){
 	parent.setAttribute("onclick", "addComment(this);");
 	var comment = obj.value;
 	if (comment != ''){
-		console.log("success");
 		parent.innerHTML = comment;}
 	else{
-		console.log("ss");
 		parent.innerHTML = parent.name;}
 }
 
