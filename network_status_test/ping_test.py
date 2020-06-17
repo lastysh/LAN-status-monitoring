@@ -90,7 +90,7 @@ def write_to_db(conn, isl):
 
 def main():
 	global ip_status_dict
-	ip_list_query.query_ip()
+	if not ip_list_query.query_ip(): return False
 	ip_msg_list = file_parser()
 	ip_status_dict = dict()
 	ip_msg_list.insert(0, FirstTup)
