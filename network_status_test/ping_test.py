@@ -18,17 +18,17 @@ FirstTup = (InterAddr, ('NaN', 'Baidu'))
 FIDelayV = "NaN"
 
 
-def file_parser():
+def file_parser(ifp):
 	ip_msg_list = list()
-	with open(IP_FILE_PATH, 'r') as f:
-		while True:
-			line = f.readline()
-			if line:
-				record_tuple = line.split()
+	with open(ifp, 'r') as f:
+		lines = f.readlines()
+		for line in lines:
+			record_tuple = line.split()
+			if record_tuple:
 				# element -> (ip, (mac, name))
 				ip_msg_list.append((record_tuple[1], (record_tuple[0], record_tuple[2])))
 			else:
-				break
+				continue
 	return ip_msg_list
 
 
@@ -90,8 +90,9 @@ def write_to_db(conn, isl):
 
 def main():
 	global ip_status_dict
-	if not ip_list_query.query_ip(): return False
-	ip_msg_list = file_parser()
+	return_code = 0
+	if not ip_list_query.query_ip(): return_code = 1
+	ip_msg_list = file_parser(IP_FILE_PATH)
 	ip_status_dict = dict()
 	ip_msg_list.insert(0, FirstTup)
 	pool = mulPool(128) # 设定进程数
@@ -104,6 +105,7 @@ def main():
 	ip_status_list.insert(0, InterInfo)
 	conn = MySQLdb.connect(host='localhost', user='root', passwd='linux20001', db='ip_test')
 	write_to_db(conn, ip_status_list)
+	return return_code
 
 
 if __name__ == '__main__':
