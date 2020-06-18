@@ -27,5 +27,5 @@ def register(request):
 
 
 def update_state(request):
-	ping_test.main()
+	if ping_test.main(): return HttpResponse("更新异常！") #无法获取最新的<font style='color:red'>路由表</font>当前状态更新成功！
 	return HttpResponse("更新成功！")

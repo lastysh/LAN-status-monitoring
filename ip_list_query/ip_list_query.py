@@ -23,7 +23,10 @@ def query_ip():
 	encoded = base64.b64encode(USERNAME+':'.encode()+PASSWORD)
 	headers = {'Authorization': b'Basic ' + encoded}
 
-	query_res = requests.get(URL, headers=headers)
+	try:
+		query_res = requests.get(URL, headers=headers, timeout=10)
+	except requests.exceptions.ConnectTimeout:
+		return False
 	filepath = os.path.join(PRIVATE_DIR, 'ip_list_file', FILENAME)
 	filepath_split = os.path.splitext(filepath)
 	old_filepath = filepath_split[0]+"_old"+filepath_split[1]
