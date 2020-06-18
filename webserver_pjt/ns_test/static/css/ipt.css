@@ -84,6 +84,7 @@ body {
     border-bottom-width: 2px;
     border-color: rgba(255, 255, 255, 0.5);
     background: transparent;
+    text-align: center;
 }
 .set_comment input:focus{
     outline: 0;
