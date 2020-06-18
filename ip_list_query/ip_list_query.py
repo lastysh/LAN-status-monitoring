@@ -24,7 +24,7 @@ def query_ip():
 	headers = {'Authorization': b'Basic ' + encoded}
 
 	try:
-		query_res = requests.get(URL, headers=headers, timeout=10)
+		query_res = requests.get(URL, headers=headers, timeout=12)
 	except requests.exceptions.ConnectTimeout:
 		return False
 	filepath = os.path.join(PRIVATE_DIR, 'ip_list_file', FILENAME)
