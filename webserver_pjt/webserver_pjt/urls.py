@@ -24,5 +24,5 @@ urlpatterns = [
     url('index/', index),
     url('login/', login),
     url('register/', register),
-    url('update_state/', update_state),
+    url('api/update/', update_state),
 ]

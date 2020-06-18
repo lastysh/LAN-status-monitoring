@@ -37,19 +37,19 @@ function rmStyle(){
 
 function addComment(obj){
 	obj.removeAttribute("onclick");
-	obj.innerHTML = '<input type="text" class="af" maxlength="10" size="10" style="color: black;font-weight: bold;height: 18px;" onblur="submitInput(this)" onKeypress="checkKey(event);" ref="af">';
+	obj.innerHTML = '<input type="text" class="af" maxlength="15" size="12" style="color: black;font-weight: bold;height: 18px;" onblur="submitInput(this)" onKeypress="checkKey(event);" oninput="checkInput(this)" ref="af">';
 	input_node = obj.getElementsByTagName('input')[0];
 	var vue=new Vue({
 		el: '.af',
 		created() {
-        	this.af()
-    	},
+			this.af()
+		},
 		methods:{
-	        af: function() {
-	        	this.$nextTick(() => {
-	    			this.$refs.af.focus()
-	  			})
-	  		}
+			af: function() {
+				this.$nextTick(() => {
+					this.$refs.af.focus()
+				})
+			}
 		}
 	})
 }
@@ -60,12 +60,50 @@ function checkKey(e){
 	}
 }
 
+function checkInput(obj){
+	var value = obj.value;
+	console.log(value);
+	var reg = /[\u4e00-\u9fa5]/g;
+	var cn = value.match(reg);
+	if (cn == null) cn = [];
+	console.log(cn.length)
+	var default_max = 16;
+	switch (cn.length) {
+	case 0:
+		break;
+	case 1:
+		break;
+	case 2:
+		obj.setAttribute('maxlength', default_max - 2);
+		break;
+	case 3:
+		obj.setAttribute('maxlength', default_max - 3);
+		break;
+	case 4:
+		obj.setAttribute('maxlength', default_max - 4);
+		break;
+	case 5:
+		obj.setAttribute('maxlength', default_max - 5);
+		break;
+	case 6:
+		obj.setAttribute('maxlength', default_max - 6);
+		break;
+	case 7:
+		obj.setAttribute('maxlength', default_max - 7);
+		break;
+	default:
+		obj.setAttribute('maxlength', default_max - 8);
+	}
+}
+
 function submitInput(obj){
 	var parent = obj.parentNode;
 	parent.setAttribute("onclick", "addComment(this);");
 	var comment = obj.value;
 	if (comment != ''){
-		parent.innerHTML = comment;}
+		parent.innerHTML = comment;
+		parent.name = comment;
+	}
 	else{
 		parent.innerHTML = parent.name;}
 }
@@ -89,9 +127,9 @@ function updateStatus(){
 		{
 			_update.innerHTML= '<p style="color:red;">' + xmlhttp.responseText + '</p>';
 			var update = "javascript:location.href='/'"
-    		setTimeout(update,1000);
+			setTimeout(update,1000);
 		}
 	}
-	xmlhttp.open("GET","/update_state",true);
+	xmlhttp.open("GET","/api/update",true);
 	xmlhttp.send();
 }
