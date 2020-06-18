@@ -37,7 +37,8 @@ function rmStyle(){
 
 function addComment(obj){
 	obj.removeAttribute("onclick");
-	obj.innerHTML = '<input type="text" class="af" maxlength="15" size="12" style="color: black;font-weight: bold;height: 18px;" onblur="submitInput(this)" onKeypress="checkKey(event);" oninput="checkInput(this)" ref="af">';
+	var default_value = obj.name
+	obj.innerHTML = `<input type="text" class="af" maxlength="15" size="12" onblur="submitInput(this)" onKeypress="checkKey(event);" oninput="checkInput(this)" ref="af" value="${default_value}">`
 	input_node = obj.getElementsByTagName('input')[0];
 	var vue=new Vue({
 		el: '.af',
@@ -47,7 +48,11 @@ function addComment(obj){
 		methods:{
 			af: function() {
 				this.$nextTick(() => {
+					console.log(input_node.value)
 					this.$refs.af.focus()
+					input_node.selectionStart = input_node.value.length;
+					input_node.selectionEnd = input_node.value.length;
+					console.log(input_node.value.length)
 				})
 			}
 		}
@@ -62,11 +67,9 @@ function checkKey(e){
 
 function checkInput(obj){
 	var value = obj.value;
-	console.log(value);
 	var reg = /[\u4e00-\u9fa5]/g;
 	var cn = value.match(reg);
 	if (cn == null) cn = [];
-	console.log(cn.length)
 	var default_max = 16;
 	switch (cn.length) {
 	case 0:
@@ -93,6 +96,7 @@ function checkInput(obj){
 		break;
 	default:
 		obj.setAttribute('maxlength', default_max - 8);
+		obj.value = value.slice(0, 8);
 	}
 }
 
@@ -105,7 +109,8 @@ function submitInput(obj){
 		parent.name = comment;
 	}
 	else{
-		parent.innerHTML = parent.name;}
+		parent.innerHTML = parent.name;
+	}
 }
 
 function updateStatus(){

@@ -79,6 +79,9 @@ body {
     cursor: url(/static/img/pen.ico) 10 25, auto;
 }
 .set_comment input{
+    color: black;
+    font-weight: bold;
+    height: 18px;
     border: 0;
     border-style: solid;
     border-bottom-width: 2px;
