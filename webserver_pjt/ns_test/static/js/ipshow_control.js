@@ -34,7 +34,7 @@ function rmStyle(){
 		}
 	}
 }
-
+ 
 function addComment(obj){
 	obj.removeAttribute("onclick");
 	var default_value = obj.name
@@ -48,11 +48,7 @@ function addComment(obj){
 		methods:{
 			af: function() {
 				this.$nextTick(() => {
-					console.log(input_node.value)
 					this.$refs.af.focus()
-					input_node.selectionStart = input_node.value.length;
-					input_node.selectionEnd = input_node.value.length;
-					console.log(input_node.value.length)
 				})
 			}
 		}
@@ -67,36 +63,35 @@ function checkKey(e){
 
 function checkInput(obj){
 	var value = obj.value;
-	var reg = /[\u4e00-\u9fa5]/g;
-	var cn = value.match(reg);
-	if (cn == null) cn = [];
+	var cn_reg = /[\u4e00-\u9fa5]/g;
+	var cc_reg = /[a-zA-Z0-9\-_]/g;
+	var cn_count = 0;
+	var character = 0;
+	var input_length = 0;
 	var default_max = 16;
-	switch (cn.length) {
-	case 0:
-		break;
-	case 1:
-		break;
-	case 2:
-		obj.setAttribute('maxlength', default_max - 2);
-		break;
-	case 3:
-		obj.setAttribute('maxlength', default_max - 3);
-		break;
-	case 4:
-		obj.setAttribute('maxlength', default_max - 4);
-		break;
-	case 5:
-		obj.setAttribute('maxlength', default_max - 5);
-		break;
-	case 6:
-		obj.setAttribute('maxlength', default_max - 6);
-		break;
-	case 7:
-		obj.setAttribute('maxlength', default_max - 7);
-		break;
-	default:
-		obj.setAttribute('maxlength', default_max - 8);
-		obj.value = value.slice(0, 8);
+	for (var i=0;i<obj.value.length;i++)
+	{
+		var cn = value[i].match(cn_reg);
+		if (cn){
+			++cn_count;
+			default_max = default_max - 2*cn_count;
+			obj.setAttribute('maxlength', default_max);
+			console.log("maxl" + obj.getAttribute('maxlength'));
+			console.log("cn_c" + cn_count);
+		} else {
+			var cc = value[i].match(cc_reg);
+			if (!cc){
+				alert("备注仅支持常用汉字，英文字母，数字，'-'和'_'符号。");
+				obj.value = '';
+			}
+			++character;
+		}
+		input_length = character + cn_count * 2
+		if (input_length>16){
+			--cn_count;
+			obj.value = obj.value.slice(0, character+cn_count);
+			break;
+		}
 	}
 }
 
