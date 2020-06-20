@@ -38,11 +38,12 @@ function rmStyle(){
 function addComment(obj){
 	obj.removeAttribute("onclick");
 	var default_value = obj.name
-	obj.innerHTML = `<input type="text" class="af" maxlength="15" size="12" onblur="submitInput(this)" onKeypress="checkKey(event);" oninput="checkInput(this)" ref="af" value="${default_value}">`
+	// obj.innerHTML = `<input type="text" class="af" maxlength="15" size="12" onblur="submitInput(this)" onKeypress="checkKey(event);" oninput="checkInput(this)" ref="af" value="${default_value}">`
+	obj.innerHTML = '<input type="text" class="af" maxlength="15" size="12" onblur="submitInput(this)" onKeypress="checkKey(event);" oninput="checkInput(this)" ref="af" value="{default_value}">'.replace('{default_value}', default_value)
 	input_node = obj.getElementsByTagName('input')[0];
 	var vue=new Vue({
 		el: '.af',
-		created() {
+		created: function() {
 			this.af()
 		},
 		methods:{
