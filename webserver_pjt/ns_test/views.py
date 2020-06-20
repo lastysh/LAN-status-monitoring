@@ -11,6 +11,8 @@ from network_status_test import ping_test
 def test_index(request):
 	if request.method == 'GET':
 		ip_list = models.Ips.objects.all()
+		if len(ip_list) == 0:
+			return render(request, 'ipshow/update.html')
 		return render(request, 'ipshow/index.html', {'baidu': ip_list[0], 'ip_list': ip_list[1:]})
 
 

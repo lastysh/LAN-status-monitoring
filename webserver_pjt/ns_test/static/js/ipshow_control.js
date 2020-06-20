@@ -48,6 +48,8 @@ function addComment(obj){
 		methods:{
 			af: function() {
 				this.$nextTick(() => {
+					this.$refs.af.selectionStart = input_node.value.length;
+					this.$refs.af.selectionEnd = input_node.value.length;
 					this.$refs.af.focus()
 				})
 			}
@@ -64,32 +66,24 @@ function checkKey(e){
 function checkInput(obj){
 	var value = obj.value;
 	var cn_reg = /[\u4e00-\u9fa5]/g;
-	var cc_reg = /[a-zA-Z0-9\-_]/g;
 	var cn_count = 0;
 	var character = 0;
 	var input_length = 0;
-	var default_max = 16;
 	for (var i=0;i<obj.value.length;i++)
 	{
+		var default_max = 16;
 		var cn = value[i].match(cn_reg);
 		if (cn){
 			++cn_count;
-			default_max = default_max - 2*cn_count;
+			default_max = default_max - cn_count;
 			obj.setAttribute('maxlength', default_max);
-			console.log("maxl" + obj.getAttribute('maxlength'));
-			console.log("cn_c" + cn_count);
 		} else {
-			var cc = value[i].match(cc_reg);
-			if (!cc){
-				alert("备注仅支持常用汉字，英文字母，数字，'-'和'_'符号。");
-				obj.value = '';
-			}
 			++character;
 		}
 		input_length = character + cn_count * 2
 		if (input_length>16){
-			--cn_count;
-			obj.value = obj.value.slice(0, character+cn_count);
+			obj.value = obj.value.slice(0, default_max);
+			obj.setAttribute('maxlength', default_max+1)
 			break;
 		}
 	}
@@ -98,10 +92,18 @@ function checkInput(obj){
 function submitInput(obj){
 	var parent = obj.parentNode;
 	parent.setAttribute("onclick", "addComment(this);");
+	var iv_reg = /[^a-zA-Z0-9\-_\u4e00-\u9fa5]/g;
 	var comment = obj.value;
 	if (comment != ''){
-		parent.innerHTML = comment;
-		parent.name = comment;
+		var iv = comment.match(iv_reg); // 0, undefined, NaN, null, false 为假, [] 为真
+		if (iv){
+			alert("备注仅支持常用汉字，英文字母，数字，'-'和'_'符号。");
+			parent.innerHTML = parent.name;
+		}
+		else {
+			parent.innerHTML = comment;
+			parent.name = comment;
+		}
 	}
 	else{
 		parent.innerHTML = parent.name;
@@ -127,7 +129,7 @@ function updateStatus(){
 		{
 			_update.innerHTML= '<p style="color:red;">' + xmlhttp.responseText + '</p>';
 			var update = "javascript:location.href='/'"
-			setTimeout(update,1000);
+			setTimeout(update,1500);
 		}
 	}
 	xmlhttp.open("GET","/api/update",true);
