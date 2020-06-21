@@ -21,15 +21,20 @@ def get_routetable():
 def check_modify(ss, nr, _or):
 	nd = dict(nr)
 	od = dict(_or)
+	record_mac = list()
+	record_name = list()
 	for ip in ss:
 		new_mac = nd[ip][0]
 		old_mac = od[ip][0]
 		new_name = nd[ip][1]
 		old_name = od[ip][1]
 		if new_mac != old_mac: # mac
-			print(">> {0}: mac地址从 {1} 更改为 {2}".format(ip, new_mac, old_mac))
+			# print(">> {0}: mac地址从 {1} 更改为 {2}".format(ip, new_mac, old_mac))
+			record_mac.append("<font color='red'>>></font> {0}: mac地址从 {1} 更改为 {2}".format(ip, new_mac, old_mac))
 		if new_name != old_name: # name
-			print(">> {0}: 名称从 {1} 更改为 {2}".format(ip, new_name, old_name))
+			# print(">> {0}: 名称从 {1} 更改为 {2}".format(ip, new_name, old_name))
+			record_name.append("<font color='red'>>></font> {0}: 名称从 {1} 更改为 {2}".format(ip, new_name, old_name))
+	return record_mac, record_name
 
 
 def diff_compare():
@@ -41,8 +46,33 @@ def diff_compare():
 	all_ip_set = set('192.168.1.%s' % i for i in range(2, 255))
 	no_use = all_ip_set.difference(nset)
 	same_set = nset & oset
-	check_modify(same_set, new_rtb, old_rtb)
+	return check_modify(same_set, new_rtb, old_rtb)
+
+
+def write_to_html(pmac, pname):
+	html_start = """
+	<!DOCTYPE html>
+	<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title>每日测试报告</title>
+	</head>
+	<body>
+		<h1>TEST_REPORT</h1>
+	""".encode()
+	html_end = """
+	</body>
+	</html>
+	""".encode()
+	with open("example_report.html", 'wb') as f:
+		f.write(html_start)
+		for record in pmac:
+			f.write('<p><strong>%s</strong></p>'.encode() % record.encode())
+		for record in pname:
+			f.write('<p><strong>%s</strong></p>'.encode() % record.encode())
+		f.write(html_end)
 
 
 if __name__ == '__main__':
-	diff_compare()
+	rdm, rdn = diff_compare()
+	write_to_html(rdm, rdn)
