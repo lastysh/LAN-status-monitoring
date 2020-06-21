@@ -95,7 +95,7 @@ function submitInput(obj){
 	parent.setAttribute("onclick", "addComment(this);");
 	var iv_reg = /[^a-zA-Z0-9\-_\u4e00-\u9fa5]/g;
 	var comment = obj.value;
-	if (comment != ''){
+	if (comment != '' && comment != parent.name){
 		var iv = comment.match(iv_reg); // 0, undefined, NaN, null, false 为假, [] 为真
 		if (iv){
 			alert("备注仅支持常用汉字，英文字母，数字，'-'和'_'符号。");
@@ -104,6 +104,19 @@ function submitInput(obj){
 		else {
 			parent.innerHTML = comment;
 			parent.name = comment;
+			var xmlhttp;
+			if (window.XMLHttpRequest)
+			{// code for IE7+, Firefox, Chrome, Opera, Safari
+				xmlhttp=new XMLHttpRequest();
+			}
+			else
+			{// code for IE6, IE5
+				xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+			}
+			var csfr_token_kv = 'csrfmiddlewaretoken='+$('[name="csrfmiddlewaretoken"]').val()
+			xmlhttp.open("POST","/api/comment/",true);
+			xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+			xmlhttp.send("ip={ip}&comment={comment}&{csrf_token_kv}".replace('{ip}', parent.id).replace('{comment}', comment).replace('{csrf_token_kv}', csfr_token_kv));
 		}
 	}
 	else{
@@ -123,7 +136,6 @@ function updateStatus(){
 	{// code for IE6, IE5
 		xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
 	}
-	// _update.innerHTML = xmlhttp.responseText;
 	xmlhttp.onreadystatechange=function()
 	{
 		if (xmlhttp.readyState==4 && xmlhttp.status==200)
