@@ -81,7 +81,12 @@ def write_to_db(conn, isl):
 		if item[0] == InterAddr:
 			sql = "insert into ns_test_ips values(NULL, '%s', '%s', '%s', '%s', '%s')" % (item[0], item[1][0], item[1][1], item[1][2], FIDelayV)
 		else:
-			sql = "insert into ns_test_ips values(NULL, '%s', '%s', '%s', '%s', '')" % (item[0], item[1][0], item[1][1], item[1][2])
+			cur.execute('select * from ns_test_comment where ip="%s"' % item[0])
+			result = cur.fetchall()
+			if result:
+				sql = "insert into ns_test_ips values(NULL, '%s', '%s', '%s', '%s', '%s')" % (item[0], item[1][0], item[1][1], item[1][2], result[0][2])
+			else:
+				sql = "insert into ns_test_ips values(NULL, '%s', '%s', '%s', '%s', '')" % (item[0], item[1][0], item[1][1], item[1][2])
 		cur.execute(sql)
 		cur.close()
 	conn.commit()
