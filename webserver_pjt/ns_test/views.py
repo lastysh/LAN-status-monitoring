@@ -30,20 +30,24 @@ def register(request):
 
 
 def update_state(request):
-	if ping_test.main(): return HttpResponse("更新异常！") #无法获取最新的<font style='color:red'>路由表</font>当前状态更新成功！
+	if ping_test.main(): return HttpResponse("更新异常！") #无法获取最新的路由表，当前使用的路由表状态更新成功！
 	return HttpResponse("更新成功！")
 
 def insert_comment(request):
 	if request.method == 'POST':
 		xhr_dict = parse_requeset_body(request.body.decode())
-		record = models.Comment.objects.filter(ip=xhr_dict['ip'])
-		if record:
-			record.comment = xhr_dict['comment']
+		ip_record = models.Ips.objects.get(ip=xhr_dict['ip'])
+		comment_record = models.Comment.objects.filter(ip=xhr_dict['ip'])
+		if comment_record:
+			comment_record[0].comment = xhr_dict['comment']
+			comment_record[0].save()
 		else:
 			new_record = models.Comment.objects.create()
 			new_record.ip = xhr_dict['ip']
 			new_record.comment = xhr_dict['comment']
 			new_record.save()
+		ip_record.comment = xhr_dict['comment']
+		ip_record.save()
 		return HttpResponse("设置成功！")
 	else:
 		r = HttpResponse()
