@@ -108,7 +108,7 @@ def main():
 	InterInfo = (InterAddr, (ip_status_dict.pop(InterAddr)))
 	ip_status_list = sorted(ip_status_dict.items(), key=lambda ip: int(ip[0].split('.')[-1]))
 	ip_status_list.insert(0, InterInfo)
-	conn = MySQLdb.connect(host='localhost', user='root', passwd='linux20001', db='ip_test')
+	conn = MySQLdb.connect(host='localhost', user='root', passwd='linux20001', db='ip_test', charset='utf8')
 	write_to_db(conn, ip_status_list)
 	return return_code
 
