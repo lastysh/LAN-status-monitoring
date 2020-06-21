@@ -20,9 +20,10 @@ from ns_test.views import *
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    url('^$', test_index),
+    url('^$', home),
     url('index/', index),
     url('login/', login),
     url('register/', register),
     url('api/update/', update_state),
+    url('api/comment/', insert_comment),
 ]
