@@ -30,15 +30,19 @@ def check_modify(ss, nr, _or):
 		old_name = od[ip][1]
 		if new_mac != old_mac: # mac
 			# print(">> {0}: mac地址从 {1} 更改为 {2}".format(ip, new_mac, old_mac))
-			record_mac.append("<font color='red'>>></font> {0}: mac地址从 {1} 更改为 {2}".format(ip, new_mac, old_mac))
+			record_mac.append("<font color='red'><M></font> {0}: mac地址从 {1} 更改为 {2}".format(ip, new_mac, old_mac))
 		if new_name != old_name: # name
 			# print(">> {0}: 名称从 {1} 更改为 {2}".format(ip, new_name, old_name))
-			record_name.append("<font color='red'>>></font> {0}: 名称从 {1} 更改为 {2}".format(ip, new_name, old_name))
+			record_name.append("<font color='red'><M></font> {0}: 名称从 {1} 更改为 {2}".format(ip, new_name, old_name))
 	return record_mac, record_name
 
 
 def diff_compare():
-	new_rtb, old_rtb = get_routetable()
+	global no_use
+	try:
+		new_rtb, old_rtb = get_routetable()
+	except:
+		return 
 	nset = set(i[0] for i in new_rtb)
 	oset = set(i[0] for i in old_rtb)
 	add = nset.difference(oset)
@@ -58,9 +62,11 @@ def write_to_html(pmac, pname):
 		<title>每日测试报告</title>
 	</head>
 	<body>
+	<center>
 		<h1>TEST_REPORT</h1>
 	""".encode()
 	html_end = """
+	</center>
 	</body>
 	</html>
 	""".encode()
@@ -70,9 +76,25 @@ def write_to_html(pmac, pname):
 			f.write('<p><strong>%s</strong></p>'.encode() % record.encode())
 		for record in pname:
 			f.write('<p><strong>%s</strong></p>'.encode() % record.encode())
+		if no_use:
+			i = 0
+			f.write('<h3>No Use IP List:</h3>'.encode())
+			f.write('<table style="border:3px double;font-weight:bold;" cellpadding="5">'.encode())
+			for ip in no_use:
+				if i%3 == 0:
+					f.write('<tr>'.encode())
+				f.write('<td style="border:1px solid;background:rgb(165,166,167);">%s</td>'.encode() % ip.encode())
+				if i%3 == 2:
+					f.write('</tr>'.encode())
+				i += 1
+			f.write('</table>'.encode())
 		f.write(html_end)
 
 
 if __name__ == '__main__':
+	# try:
 	rdm, rdn = diff_compare()
 	write_to_html(rdm, rdn)
+	print("报告已生成！")
+	# except:
+	# 	print("程序执行失败！")
