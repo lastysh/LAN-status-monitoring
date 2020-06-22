@@ -30,10 +30,10 @@ def check_modify(ss, nr, _or):
 		old_name = od[ip][1]
 		if new_mac != old_mac: # mac
 			# print(">> {0}: mac地址从 {1} 更改为 {2}".format(ip, new_mac, old_mac))
-			record_mac.append("<font color='red'><M></font> {0}: mac地址从 {1} 更改为 {2}".format(ip, new_mac, old_mac))
+			record_mac.append("<font color='red'>&lt;M&gt;</font> {0}：<font color='green'>mac地址</font>从 {1} 更改为 {2}".format(ip, new_mac, old_mac))
 		if new_name != old_name: # name
 			# print(">> {0}: 名称从 {1} 更改为 {2}".format(ip, new_name, old_name))
-			record_name.append("<font color='red'><M></font> {0}: 名称从 {1} 更改为 {2}".format(ip, new_name, old_name))
+			record_name.append("<font color='red'>&lt;M&gt;</font> {0}：<font color='green'>名称</font>从 {1} 更改为 {2}".format(ip, new_name, old_name))
 	return record_mac, record_name
 
 
@@ -48,46 +48,52 @@ def diff_compare():
 	add = nset.difference(oset)
 	delete = oset.difference(nset)
 	all_ip_set = set('192.168.1.%s' % i for i in range(2, 255))
-	no_use = all_ip_set.difference(nset)
+	no_use = sorted(all_ip_set.difference(nset), key=lambda i: int(i.split('.')[-1]))
 	same_set = nset & oset
 	return check_modify(same_set, new_rtb, old_rtb)
 
 
 def write_to_html(pmac, pname):
-	html_start = """
-	<!DOCTYPE html>
-	<html lang="en">
-	<head>
-		<meta charset="UTF-8">
-		<title>每日测试报告</title>
-	</head>
-	<body>
-	<center>
-		<h1>TEST_REPORT</h1>
+	html_start = """<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>每日测试报告</title>
+</head>
+<body>
+<center>
+	<h1>TEST_REPORT</h1>
 	""".encode()
-	html_end = """
-	</center>
-	</body>
-	</html>
+	html_end = """</center>
+</body>
+</html>
 	""".encode()
 	with open("example_report.html", 'wb') as f:
 		f.write(html_start)
+		f.write('<div style="text-align:left;width: 50%;">\n'.encode())
 		for record in pmac:
-			f.write('<p><strong>%s</strong></p>'.encode() % record.encode())
+			f.write('\t<p><strong>%s</strong></p>\n'.encode() % record.encode())
 		for record in pname:
-			f.write('<p><strong>%s</strong></p>'.encode() % record.encode())
+			f.write('\t<p><strong>%s</strong></p>\n'.encode() % record.encode())
+		f.write('\t</div>\n'.encode())
 		if no_use:
 			i = 0
-			f.write('<h3>No Use IP List:</h3>'.encode())
-			f.write('<table style="border:3px double;font-weight:bold;" cellpadding="5">'.encode())
+			close_tr = 1
+			f.write('<h3>No Use IP List:</h3>\n'.encode())
+			f.write('<table style="border:3px double;font-weight:bold;" cellpadding="5">\n'.encode())
 			for ip in no_use:
-				if i%3 == 0:
-					f.write('<tr>'.encode())
-				f.write('<td style="border:1px solid;background:rgb(165,166,167);">%s</td>'.encode() % ip.encode())
-				if i%3 == 2:
-					f.write('</tr>'.encode())
+				if i%5 == 0:
+					close_tr = 0
+					f.write('<tr>\n'.encode())
+				f.write('<td style="border:1px solid;background:rgb(165,166,167);">%s</td>\n'.encode() % ip.encode())
+				if i%5 == 4:
+					close_tr = 1
+					f.write('</tr>\n'.encode())
 				i += 1
-			f.write('</table>'.encode())
+			if close_tr:
+				f.write('</table>\n'.encode())
+			else:
+				f.write('</tr>\n</table>\n'.encode())
 		f.write(html_end)
 
 
