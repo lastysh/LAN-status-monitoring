@@ -7,11 +7,13 @@ import base64
 import os
 import requests
 import shutil
+import logging
 
 
 PRIVATE_DIR = "../../private_files"
 FILENAME = "LAN_ip_list.cfg"
 URL = "http://192.168.1.1/ER3260_ipmac.cfg"
+logger = logging.getLogger('django')
 
 
 def query_ip(): 
@@ -26,8 +28,11 @@ def query_ip():
 	try:
 		query_res = requests.get(URL, headers=headers, timeout=12)
 		if "Unauthorized".encode() in query_res.content:
+			logger.info("<Authentication failed> Failed to obtain routing table.")
 			return False
+		logger.error("<Success> The latest routing table has been obtained.")
 	except requests.exceptions.ConnectTimeout:
+		logger.error("<Connection timed out> Failed to obtain routing table.")
 		return False
 	filepath = os.path.join(PRIVATE_DIR, 'ip_list_file', FILENAME)
 	filepath_split = os.path.splitext(filepath)

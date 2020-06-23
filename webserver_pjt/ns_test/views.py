@@ -7,6 +7,7 @@ import json
 import sys
 sys.path.append(r"../")
 from network_status_test import ping_test
+import logging; logger = logging.getLogger("django")
 
 
 def home(request):
@@ -18,6 +19,7 @@ def home(request):
 
 
 def index(request):
+	logger.info("<Redirect> Jump to /")
 	return HttpResponseRedirect('/')
 
 
@@ -30,7 +32,11 @@ def register(request):
 
 
 def update_state(request):
-	if ping_test.main(): return HttpResponse("更新异常！") #无法获取最新的路由表，当前使用的路由表状态更新成功！
+	logger.info("<XHR> 开始获取。。。")
+	if ping_test.main():
+		logger.warning("<Not expected> 无法获取最新的路由表，当前使用的路由表状态更新成功！") 
+		return HttpResponse("更新异常！")
+	logger.info("<Update> 路由表状态更新成功！")
 	return HttpResponse("更新成功！")
 
 def insert_comment(request):
@@ -48,12 +54,18 @@ def insert_comment(request):
 			new_record.save()
 		ip_record.comment = xhr_dict['comment']
 		ip_record.save()
+		logger.info("<Set> %s 备注设置成功！" % xhr_dict['ip'])
 		return HttpResponse("设置成功！")
 	else:
 		r = HttpResponse()
 		error_dict = {'message':'error', 'state':'404'}
 		r.content = json.dumps(error_dict)
 		return r
+
+def response_error_handler(request, exception=None):
+    return render(request, 'ipshow/404.html', status=404)
+
+handler404 = response_error_handler
 
 
 def parse_requeset_body(s:str):
