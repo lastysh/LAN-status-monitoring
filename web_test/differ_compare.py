@@ -42,7 +42,7 @@ def diff_compare():
 	try:
 		new_rtb, old_rtb = get_routetable()
 	except:
-		return 
+		return
 	nset = set(i[0] for i in new_rtb)
 	oset = set(i[0] for i in old_rtb)
 	add = nset.difference(oset)
@@ -98,9 +98,9 @@ def write_to_html(pmac, pname):
 
 
 if __name__ == '__main__':
-	# try:
-	rdm, rdn = diff_compare()
-	write_to_html(rdm, rdn)
-	print("报告已生成！")
-	# except:
-	# 	print("程序执行失败！")
+	try:
+		rdm, rdn = diff_compare()
+		write_to_html(rdm, rdn)
+		print("报告已生成！")
+	except:
+		print("程序执行失败！")
