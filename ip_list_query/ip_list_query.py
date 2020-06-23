@@ -30,12 +30,11 @@ def query_ip():
 	filepath = os.path.join(PRIVATE_DIR, 'ip_list_file', FILENAME)
 	filepath_split = os.path.splitext(filepath)
 	old_filepath = filepath_split[0]+"_old"+filepath_split[1]
-
 	if os.path.exists(filepath):
 		shutil.move(filepath, old_filepath)
-
 	with open(filepath, 'wb') as f:
 		f.write(query_res.content)
+	return True
 
 
 if __name__ == '__main__':

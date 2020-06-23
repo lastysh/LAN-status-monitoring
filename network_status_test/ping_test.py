@@ -5,6 +5,8 @@
 import re
 import subprocess
 import MySQLdb
+import os
+import configparser
 from multiprocessing.dummy import Pool as mulPool
 
 
@@ -16,6 +18,12 @@ IP_FILE_PATH = "../../private_files/ip_list_file/LAN_ip_list.cfg"
 InterAddr = "www.baidu.com"
 FirstTup = (InterAddr, ('NaN', 'Baidu'))
 FIDelayV = "NaN"
+ip_status_dict = dict()
+PRIVATE_DIR = "../../private_files"
+cfg = configparser.ConfigParser()
+cfg.read(os.path.join(PRIVATE_DIR,'users_config','users.ini'))
+dbuser=cfg.get('DBACCOUNT', 'user')
+dbpasswd=cfg.get('DBACCOUNT', 'password')
 
 
 def file_parser(ifp):
@@ -43,7 +51,7 @@ def get_result(ip_msg):
 	ip = ip_msg[0]
 	msg_tup = ip_msg[1]
 	ping_res = ping_execute(ip)
-	loss = re.findall(r'丢失 = (\d)', ping_res)[0]
+	# loss = re.findall(r'丢失 = (\d)', ping_res)[0]
 	average = re.findall(r'平均 = (\d+)ms', ping_res)
 	overtime = re.findall(r'请求超时', ping_res)
 	unreachable = re.findall(r'无法访问目标主机', ping_res)
@@ -54,16 +62,16 @@ def get_result(ip_msg):
 			FIDelayV = "NaN"
 	try:
 		if len(average) == 0:
-			status = 0
+			status = 0 # host offline
 			ip_status_dict[ip] = msg_tup + (status,)
 		elif len(unreachable) > 0:
-			status = 3  # Ping unstable
+			status = 3 # Ping unstable
 			ip_status_dict[ip] = msg_tup + (status,)
 		elif int(average[0])>200 or len(overtime)>0:
-			status = 2
+			status = 2 # HighDelay
 			ip_status_dict[ip] = msg_tup + (status,)
 		else:
-			status = 1
+			status = 1 # host online
 			ip_status_dict[ip] = msg_tup + (status,)
 	except:
 		status = 0
@@ -94,11 +102,9 @@ def write_to_db(conn, isl):
 
 
 def main():
-	global ip_status_dict
 	return_code = 0
 	if not ip_list_query.query_ip(): return_code = 1
 	ip_msg_list = file_parser(IP_FILE_PATH)
-	ip_status_dict = dict()
 	ip_msg_list.insert(0, FirstTup)
 	pool = mulPool(128) # 设定进程数
 	pool.map(get_result, ip_msg_list)
@@ -108,7 +114,7 @@ def main():
 	InterInfo = (InterAddr, (ip_status_dict.pop(InterAddr)))
 	ip_status_list = sorted(ip_status_dict.items(), key=lambda ip: int(ip[0].split('.')[-1]))
 	ip_status_list.insert(0, InterInfo)
-	conn = MySQLdb.connect(host='localhost', user='root', passwd='linux20001', db='ip_test', charset='utf8')
+	conn = MySQLdb.connect(host='localhost', user=dbuser, passwd=dbpasswd, db='ip_test', charset='utf8')
 	write_to_db(conn, ip_status_list)
 	return return_code
 
