@@ -23,7 +23,7 @@ class QueryTest(unittest.TestCase):
 
 	def test_qi(self):
 		filepath = os.path.join(self.pd, 'ip_list_file', self.fn)
-		if self.qi() == None:
+		if self.qi():
 			self.assertTrue(os.path.exists(filepath))
 
 	def tearDown(self):
