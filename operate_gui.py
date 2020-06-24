@@ -9,7 +9,7 @@ from tkinter.messagebox import *
 
 
 MGR_FILE = "manage.py"
-MGR_DIR = "webserver_pjt"
+MGR_DIR = "webserver"
 MGR_PATH = os.path.join(MGR_DIR, MGR_FILE)
 
 
