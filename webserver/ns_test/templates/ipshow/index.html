@@ -2,7 +2,12 @@
 {% block title %}主页{% endblock %}
 {% block content %}
     <span class="extranet"><a title="{{ baidu.ip }}" href="https://www.baidu.com">外网延迟： {{ baidu.comment }}</a></span>
-    <span id="update" onclick="updateStatus();"><button>更新状态</button></span>
+    {% if update_running%}
+        <span id="update" onclick="updateStatus();"><button>后台更新中。。。
+        刷新重试</button></span>
+    {% else %}
+        <span id="update" onclick="updateStatus();"><button>更新状态</button></span>
+    {% endif %}
     <div class="container" style="width: 90%">
         {% csrf_token %}
     	<ul>

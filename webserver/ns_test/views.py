@@ -8,14 +8,16 @@ import sys
 sys.path.append(r"../")
 from ping import ping_test
 import logging; logger = logging.getLogger("django")
-
+update_running = 0
 
 def home(request):
 	if request.method == 'GET':
 		ip_list = models.Ips.objects.all()
 		if len(ip_list) == 0:
 			return render(request, 'ipshow/update.html')
-		return render(request, 'ipshow/index.html', {'baidu': ip_list[0], 'ip_list': ip_list[1:]})
+		if update_running:
+			return render(request, 'ipshow/index.html', {'baidu': ip_list[0], 'ip_list': ip_list[1:], 'update_running': update_running})
+		return render(request, 'ipshow/index.html', {'baidu': ip_list[0], 'ip_list': ip_list[1:], 'update_running': update_running})
 
 
 def index(request):
@@ -32,11 +34,15 @@ def register(request):
 
 
 def update_state(request):
+	global update_running
 	logger.info("<XHR> 开始获取。。。")
+	update_running = 1
 	if ping_test.main():
-		logger.warning("<Not expected> 无法获取最新的路由表，当前使用的路由表状态更新成功！") 
+		logger.warning("<Not expected> 无法获取最新的路由表，当前使用的路由表状态更新成功！")
+		update_running = 0
 		return HttpResponse("更新异常！")
 	logger.info("<Update> 路由表状态更新成功！")
+	update_running = 0
 	return HttpResponse("更新成功！")
 
 def insert_comment(request):
