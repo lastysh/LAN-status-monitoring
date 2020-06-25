@@ -131,6 +131,7 @@ function updateStatus(){
 		return
 	}
 	var _update = document.getElementById("update");
+	_update.removeAttribute("onclick");
 	_update.innerHTML = "<img src='static/img/loading_1.gif' style='width:80px;height:60px;'></img>";
 	var xmlhttp;
 	if (window.XMLHttpRequest)
