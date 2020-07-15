@@ -28,7 +28,7 @@ dbpasswd=cfg.get('DBACCOUNT', 'password')
 SECRET_KEY = '7b5i83pxc8dz&m9i=&1)u5x8*e@%x43#uox#=j*8)i=+8(g-64'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+# DEBUG = True
 
 ALLOWED_HOSTS = ['127.0.0.1']
 

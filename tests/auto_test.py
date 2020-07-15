@@ -4,6 +4,7 @@ import unittest, time
 import os
 import sys
 import configparser
+from selenium import webdriver
 
 
 sys.path.append("../")
@@ -63,6 +64,22 @@ class DbTest(unittest.TestCase):
 
 	def tearDown(self):
 		pass
+
+class WebTest(unittest.TestCase):
+	def setUp(self):
+		self.host = 'http://127.0.0.1'
+		self.port = '8000'
+		self.base_url = self.host + ':' + self.port
+		self.driver = webdriver.Chrome()
+		self.driver.implicitly_wait(30)
+
+	def test_web(self):
+		self.driver.get(self.base_url)
+		title = self.driver.title
+		self.assertEqual(title, u"主页")
+
+	def tearDown(self):
+		self.driver.quit()
 
 
 if __name__ == '__main__':

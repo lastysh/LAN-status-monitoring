@@ -6,7 +6,9 @@ from email.header import Header
 
 
 def send_email():
-	mail_body="<I>shine shine up</I>"
+	with open("example_report.html", 'rb') as f:
+		content = f.read()
+	mail_body=content
 	smtpserver = "smtp.163.com"
 	user = "your_email_address"
 	passwd = "your_email_password"	
