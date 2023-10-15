@@ -126,3 +126,8 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# additional
+.idea
+ast.pid
+migrations

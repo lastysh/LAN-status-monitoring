@@ -1,27 +1,27 @@
 {% load static %}
-<!DOCTYPE html>
+<!--<!DOCTYPE html>-->
 <html lang="en">
 <head>
-	<meta charset="UTF-8">
-	<title>Page Not Found</title>
-	<style type="text/css">
-		div{
-			top: 35%;
-			left: 50%;
-			position: absolute;
-			transform: translate(-50%, -50%);
-		}
-		img{
-			margin-top: 20px;
-		}
-	</style>
+    <meta charset="UTF-8">
+    <title>Page Not Found</title>
+    <style type="text/css">
+        div > div{
+            top: 35%;
+            left: 50%;
+            position: absolute;
+            transform: translate(-50%, -50%);
+        }
+        img{
+            margin-top: 20px;
+        }
+    </style>
 </head>
 <body>
-	<center>
-		<div>
-			<h1 style="font-family:serif;">网页不存在</h1>
-			<img src="{% static 'img/404.png' %}">
-		</div>
-	</center>
+<div style="text-align:center">
+    <div>
+        <h1 style="font-family:serif;">网页不存在</h1>
+        <img src="{% static 'img/404.png' %}">
+    </div>
+</div>
 </body>
 </html>

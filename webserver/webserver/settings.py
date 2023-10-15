@@ -15,11 +15,11 @@ import configparser
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-PRIVATE_DIR = "../../private_files"
+PRIVATE_DIR = "../private_files"
 cfg = configparser.ConfigParser()
-cfg.read(os.path.join(PRIVATE_DIR,'users_config','users.ini'))
-dbuser=cfg.get('DBACCOUNT', 'user')
-dbpasswd=cfg.get('DBACCOUNT', 'password')
+cfg.read(os.path.join(PRIVATE_DIR, 'users_config', 'users.ini'))
+dbuser = cfg.get('DBACCOUNT', 'user')
+dbpasswd = cfg.get('DBACCOUNT', 'password')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
@@ -88,7 +88,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'ip_test',
         'HOST': 'localhost',
-        'USER': dbuser, 
+        'USER': dbuser,
         'PASSWORD': dbpasswd,
         'PORT': '3306',
     }
@@ -147,7 +147,7 @@ LOGGING = {
             'style': '{',
         },
         'customize': {
-            'format': '[{asctime}] {message}', # [23/Jun/2020 19:01:01]
+            'format': '[{asctime}] {message}',  # [23/Jun/2020 19:01:01]
             'datefmt': '%d/%b/%Y %H:%M:%S',
             'style': '{',
         },
@@ -177,7 +177,7 @@ LOGGING = {
         'django.request': {
             'handlers': ['mail_admins'],
             'level': 'ERROR',
-            'propagate': False,
+            # 'propagate': False,  # 默认True，向日志器传递
         },
         'myproject.custom': {
             'handlers': ['console', 'mail_admins'],

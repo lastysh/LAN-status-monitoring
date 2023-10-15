@@ -6,11 +6,11 @@ function swColor(){
 	var sps = document.getElementsByClassName("sp_style");
 	for(var i=0;i<sps.length;i++)
 	{	
-		if(sps[i].getAttribute("name") == "1"){
+		if(sps[i].getAttribute("data-name") == "1"){
 			sps[i].style.backgroundColor="rgba(0,255,0,0.8)";
-		}else if(sps[i].getAttribute("name") == "0"){
+		}else if(sps[i].getAttribute("data-name") == "0"){
 			sps[i].style.backgroundColor="rgba(255,0,0,0.8)";
-		}else if(sps[i].getAttribute("name") == "2"){
+		}else if(sps[i].getAttribute("data-name") == "2"){
 			sps[i].style.backgroundColor="rgba(255,150,0,1)";
 		}else{
 			sps[i].style.setProperty('background-color','#DCDCDC');
@@ -29,7 +29,7 @@ function rmStyle(){
 	var sps = document.getElementsByClassName("sp_style");
 	for(var i=0;i<sps.length;i++)
 	{
-		if(sps[i].getAttribute("name") == "1"){
+		if(sps[i].getAttribute("data-name") == "1"){
 			sps[i].removeAttribute("style");
 		}
 	}
@@ -116,7 +116,7 @@ function submitInput(obj){
 			var csfr_token_kv = 'csrfmiddlewaretoken='+$('[name="csrfmiddlewaretoken"]').val()
 			xmlhttp.open("POST","/api/comment/",true);
 			xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-			xmlhttp.send("ip={ip}&comment={comment}&{csrf_token_kv}".replace('{ip}', parent.id).replace('{comment}', comment).replace('{csrf_token_kv}', csfr_token_kv));
+			xmlhttp.send("ip={ip}&comment={comment}&{csrf_token_kv}".replace('{ip}', parent.getAttribute('data-ip')).replace('{comment}', comment).replace('{csrf_token_kv}', csfr_token_kv));
 		}
 	}
 	else{
@@ -130,9 +130,9 @@ function updateStatus(){
 	if (clickCount>1){
 		return
 	}
-	var _update = document.getElementById("update");
-	_update.removeAttribute("onclick");
-	_update.innerHTML = "<img src='static/img/loading_1.gif' style='width:80px;height:60px;'></img>";
+	var _update = document.getElementsByClassName("update");
+	$(_update).removeAttr("onclick");
+	$(_update).html("<img src='static/img/loading_1.gif' style='width:80px;height:60px;'></img>");
 	var xmlhttp;
 	if (window.XMLHttpRequest)
 	{// code for IE7+, Firefox, Chrome, Opera, Safari
@@ -146,7 +146,7 @@ function updateStatus(){
 	{
 		if (xmlhttp.readyState==4 && xmlhttp.status==200)
 		{
-			_update.innerHTML= '<p style="color:red;">' + xmlhttp.responseText + '</p>';
+			$(_update).html('<p style="color:red;">' + xmlhttp.responseText + '</p>');
 			var update = "javascript:location.href='/'"
 			setTimeout(update,1500);
 		}
